@@ -10,7 +10,7 @@
     using namespace Chat;
     using namespace std;
 
-    namespace LibsIce {
+    namespace IceChat {
         class ServerImpl : public virtual Server {
             public:
                 virtual RoomPrx CreateRoom(const string&, const ::Ice::Current& = ::Ice::Current()) override;

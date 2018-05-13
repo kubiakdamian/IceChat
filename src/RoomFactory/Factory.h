@@ -8,20 +8,20 @@
 
     using namespace std;
     using namespace Chat;
-    using namespace LibsIce;
+    using namespace IceChat;
 
     namespace RoomFactory {
         class Factory {
             public:
-                Factory();
-                void registerRoomFactory();
+                Factory();  
                 ~Factory();
             private:
                 ServerPrx server;
-                Ice::CommunicatorPtr iceCommunicator;
+                Ice::CommunicatorPtr ic;
                 Ice::ObjectAdapterPtr adapter;
                 RoomFactoryPrx roomFactory;
                 Ports ports;
+                void registerRoomFactory();
         };
     }
 

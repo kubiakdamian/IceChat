@@ -55,13 +55,11 @@ namespace
 
 const ::IceInternal::DefaultUserExceptionFactoryInit<::Chat::UserAlreadyExists> iceC_Chat_UserAlreadyExists_init("::Chat::UserAlreadyExists");
 
-const ::IceInternal::DefaultUserExceptionFactoryInit<::Chat::NoSuchUserExist> iceC_Chat_NoSuchUserExist_init("::Chat::NoSuchUserExist");
+const ::IceInternal::DefaultUserExceptionFactoryInit<::Chat::UserDoesntExist> iceC_Chat_UserDoesntExist_init("::Chat::UserDoesntExist");
 
-const ::IceInternal::DefaultUserExceptionFactoryInit<::Chat::NoSuchRoomExist> iceC_Chat_NoSuchRoomExist_init("::Chat::NoSuchRoomExist");
+const ::IceInternal::DefaultUserExceptionFactoryInit<::Chat::RoomAlreadyExists> iceC_Chat_RoomAlreadyExists_init("::Chat::RoomAlreadyExists");
 
-const ::IceInternal::DefaultUserExceptionFactoryInit<::Chat::RoomAlreadyExist> iceC_Chat_RoomAlreadyExist_init("::Chat::RoomAlreadyExist");
-
-const ::IceInternal::DefaultUserExceptionFactoryInit<::Chat::NoResourcesAvailable> iceC_Chat_NoResourcesAvailable_init("::Chat::NoResourcesAvailable");
+const ::IceInternal::DefaultUserExceptionFactoryInit<::Chat::RoomDoesntExist> iceC_Chat_RoomDoesntExist_init("::Chat::RoomDoesntExist");
 
 const ::std::string iceC_Chat_User_ids[2] =
 {
@@ -160,47 +158,36 @@ Chat::UserAlreadyExists::ice_staticId()
     return typeId;
 }
 
-Chat::NoSuchUserExist::~NoSuchUserExist()
+Chat::UserDoesntExist::~UserDoesntExist()
 {
 }
 
 const ::std::string&
-Chat::NoSuchUserExist::ice_staticId()
+Chat::UserDoesntExist::ice_staticId()
 {
-    static const ::std::string typeId = "::Chat::NoSuchUserExist";
+    static const ::std::string typeId = "::Chat::UserDoesntExist";
     return typeId;
 }
 
-Chat::NoSuchRoomExist::~NoSuchRoomExist()
+Chat::RoomAlreadyExists::~RoomAlreadyExists()
 {
 }
 
 const ::std::string&
-Chat::NoSuchRoomExist::ice_staticId()
+Chat::RoomAlreadyExists::ice_staticId()
 {
-    static const ::std::string typeId = "::Chat::NoSuchRoomExist";
+    static const ::std::string typeId = "::Chat::RoomAlreadyExists";
     return typeId;
 }
 
-Chat::RoomAlreadyExist::~RoomAlreadyExist()
+Chat::RoomDoesntExist::~RoomDoesntExist()
 {
 }
 
 const ::std::string&
-Chat::RoomAlreadyExist::ice_staticId()
+Chat::RoomDoesntExist::ice_staticId()
 {
-    static const ::std::string typeId = "::Chat::RoomAlreadyExist";
-    return typeId;
-}
-
-Chat::NoResourcesAvailable::~NoResourcesAvailable()
-{
-}
-
-const ::std::string&
-Chat::NoResourcesAvailable::ice_staticId()
-{
-    static const ::std::string typeId = "::Chat::NoResourcesAvailable";
+    static const ::std::string typeId = "::Chat::RoomDoesntExist";
     return typeId;
 }
 
@@ -825,11 +812,7 @@ Chat::ServerPrx::_iceI_CreateRoom(const ::std::shared_ptr<::IceInternal::Outgoin
             {
                 ex.ice_throw();
             }
-            catch(const NoResourcesAvailable&)
-            {
-                throw;
-            }
-            catch(const RoomAlreadyExist&)
+            catch(const RoomAlreadyExists&)
             {
                 throw;
             }
@@ -867,7 +850,7 @@ Chat::ServerPrx::_iceI_FindRoom(const ::std::shared_ptr<::IceInternal::OutgoingA
             {
                 ex.ice_throw();
             }
-            catch(const NoSuchRoomExist&)
+            catch(const RoomDoesntExist&)
             {
                 throw;
             }
@@ -1145,46 +1128,46 @@ Chat::UserAlreadyExists::_readImpl(::Ice::InputStream* istr)
 namespace
 {
 
-const ::IceInternal::DefaultUserExceptionFactoryInit< ::Chat::NoSuchUserExist> iceC_Chat_NoSuchUserExist_init("::Chat::NoSuchUserExist");
+const ::IceInternal::DefaultUserExceptionFactoryInit< ::Chat::UserDoesntExist> iceC_Chat_UserDoesntExist_init("::Chat::UserDoesntExist");
 
 }
 
-Chat::NoSuchUserExist::~NoSuchUserExist() throw()
+Chat::UserDoesntExist::~UserDoesntExist() throw()
 {
 }
 
 ::std::string
-Chat::NoSuchUserExist::ice_id() const
+Chat::UserDoesntExist::ice_id() const
 {
-    return "::Chat::NoSuchUserExist";
+    return "::Chat::UserDoesntExist";
 }
 
-Chat::NoSuchUserExist*
-Chat::NoSuchUserExist::ice_clone() const
+Chat::UserDoesntExist*
+Chat::UserDoesntExist::ice_clone() const
 {
-    return new NoSuchUserExist(*this);
+    return new UserDoesntExist(*this);
 }
 
 void
-Chat::NoSuchUserExist::ice_throw() const
+Chat::UserDoesntExist::ice_throw() const
 {
     throw *this;
 }
 
 /// \cond STREAM
 void
-Chat::NoSuchUserExist::_writeImpl(::Ice::OutputStream* ostr) const
+Chat::UserDoesntExist::_writeImpl(::Ice::OutputStream* ostr) const
 {
-    ostr->startSlice("::Chat::NoSuchUserExist", -1, true);
-    ::Ice::StreamWriter< NoSuchUserExist, ::Ice::OutputStream>::write(ostr, *this);
+    ostr->startSlice("::Chat::UserDoesntExist", -1, true);
+    ::Ice::StreamWriter< UserDoesntExist, ::Ice::OutputStream>::write(ostr, *this);
     ostr->endSlice();
 }
 
 void
-Chat::NoSuchUserExist::_readImpl(::Ice::InputStream* istr)
+Chat::UserDoesntExist::_readImpl(::Ice::InputStream* istr)
 {
     istr->startSlice();
-    ::Ice::StreamReader< NoSuchUserExist, ::Ice::InputStream>::read(istr, *this);
+    ::Ice::StreamReader< UserDoesntExist, ::Ice::InputStream>::read(istr, *this);
     istr->endSlice();
 }
 /// \endcond
@@ -1192,46 +1175,46 @@ Chat::NoSuchUserExist::_readImpl(::Ice::InputStream* istr)
 namespace
 {
 
-const ::IceInternal::DefaultUserExceptionFactoryInit< ::Chat::NoSuchRoomExist> iceC_Chat_NoSuchRoomExist_init("::Chat::NoSuchRoomExist");
+const ::IceInternal::DefaultUserExceptionFactoryInit< ::Chat::RoomAlreadyExists> iceC_Chat_RoomAlreadyExists_init("::Chat::RoomAlreadyExists");
 
 }
 
-Chat::NoSuchRoomExist::~NoSuchRoomExist() throw()
+Chat::RoomAlreadyExists::~RoomAlreadyExists() throw()
 {
 }
 
 ::std::string
-Chat::NoSuchRoomExist::ice_id() const
+Chat::RoomAlreadyExists::ice_id() const
 {
-    return "::Chat::NoSuchRoomExist";
+    return "::Chat::RoomAlreadyExists";
 }
 
-Chat::NoSuchRoomExist*
-Chat::NoSuchRoomExist::ice_clone() const
+Chat::RoomAlreadyExists*
+Chat::RoomAlreadyExists::ice_clone() const
 {
-    return new NoSuchRoomExist(*this);
+    return new RoomAlreadyExists(*this);
 }
 
 void
-Chat::NoSuchRoomExist::ice_throw() const
+Chat::RoomAlreadyExists::ice_throw() const
 {
     throw *this;
 }
 
 /// \cond STREAM
 void
-Chat::NoSuchRoomExist::_writeImpl(::Ice::OutputStream* ostr) const
+Chat::RoomAlreadyExists::_writeImpl(::Ice::OutputStream* ostr) const
 {
-    ostr->startSlice("::Chat::NoSuchRoomExist", -1, true);
-    ::Ice::StreamWriter< NoSuchRoomExist, ::Ice::OutputStream>::write(ostr, *this);
+    ostr->startSlice("::Chat::RoomAlreadyExists", -1, true);
+    ::Ice::StreamWriter< RoomAlreadyExists, ::Ice::OutputStream>::write(ostr, *this);
     ostr->endSlice();
 }
 
 void
-Chat::NoSuchRoomExist::_readImpl(::Ice::InputStream* istr)
+Chat::RoomAlreadyExists::_readImpl(::Ice::InputStream* istr)
 {
     istr->startSlice();
-    ::Ice::StreamReader< NoSuchRoomExist, ::Ice::InputStream>::read(istr, *this);
+    ::Ice::StreamReader< RoomAlreadyExists, ::Ice::InputStream>::read(istr, *this);
     istr->endSlice();
 }
 /// \endcond
@@ -1239,93 +1222,46 @@ Chat::NoSuchRoomExist::_readImpl(::Ice::InputStream* istr)
 namespace
 {
 
-const ::IceInternal::DefaultUserExceptionFactoryInit< ::Chat::RoomAlreadyExist> iceC_Chat_RoomAlreadyExist_init("::Chat::RoomAlreadyExist");
+const ::IceInternal::DefaultUserExceptionFactoryInit< ::Chat::RoomDoesntExist> iceC_Chat_RoomDoesntExist_init("::Chat::RoomDoesntExist");
 
 }
 
-Chat::RoomAlreadyExist::~RoomAlreadyExist() throw()
+Chat::RoomDoesntExist::~RoomDoesntExist() throw()
 {
 }
 
 ::std::string
-Chat::RoomAlreadyExist::ice_id() const
+Chat::RoomDoesntExist::ice_id() const
 {
-    return "::Chat::RoomAlreadyExist";
+    return "::Chat::RoomDoesntExist";
 }
 
-Chat::RoomAlreadyExist*
-Chat::RoomAlreadyExist::ice_clone() const
+Chat::RoomDoesntExist*
+Chat::RoomDoesntExist::ice_clone() const
 {
-    return new RoomAlreadyExist(*this);
+    return new RoomDoesntExist(*this);
 }
 
 void
-Chat::RoomAlreadyExist::ice_throw() const
+Chat::RoomDoesntExist::ice_throw() const
 {
     throw *this;
 }
 
 /// \cond STREAM
 void
-Chat::RoomAlreadyExist::_writeImpl(::Ice::OutputStream* ostr) const
+Chat::RoomDoesntExist::_writeImpl(::Ice::OutputStream* ostr) const
 {
-    ostr->startSlice("::Chat::RoomAlreadyExist", -1, true);
-    ::Ice::StreamWriter< RoomAlreadyExist, ::Ice::OutputStream>::write(ostr, *this);
+    ostr->startSlice("::Chat::RoomDoesntExist", -1, true);
+    ::Ice::StreamWriter< RoomDoesntExist, ::Ice::OutputStream>::write(ostr, *this);
     ostr->endSlice();
 }
 
 void
-Chat::RoomAlreadyExist::_readImpl(::Ice::InputStream* istr)
+Chat::RoomDoesntExist::_readImpl(::Ice::InputStream* istr)
 {
     istr->startSlice();
-    ::Ice::StreamReader< RoomAlreadyExist, ::Ice::InputStream>::read(istr, *this);
-    istr->endSlice();
-}
-/// \endcond
-
-namespace
-{
-
-const ::IceInternal::DefaultUserExceptionFactoryInit< ::Chat::NoResourcesAvailable> iceC_Chat_NoResourcesAvailable_init("::Chat::NoResourcesAvailable");
-
-}
-
-Chat::NoResourcesAvailable::~NoResourcesAvailable() throw()
-{
-}
-
-::std::string
-Chat::NoResourcesAvailable::ice_id() const
-{
-    return "::Chat::NoResourcesAvailable";
-}
-
-Chat::NoResourcesAvailable*
-Chat::NoResourcesAvailable::ice_clone() const
-{
-    return new NoResourcesAvailable(*this);
-}
-
-void
-Chat::NoResourcesAvailable::ice_throw() const
-{
-    throw *this;
-}
-
-/// \cond STREAM
-void
-Chat::NoResourcesAvailable::_writeImpl(::Ice::OutputStream* ostr) const
-{
-    ostr->startSlice("::Chat::NoResourcesAvailable", -1, true);
-    ::Ice::StreamWriter< NoResourcesAvailable, ::Ice::OutputStream>::write(ostr, *this);
-    ostr->endSlice();
-}
-
-void
-Chat::NoResourcesAvailable::_readImpl(::Ice::InputStream* istr)
-{
-    istr->startSlice();
-    ::Ice::StreamReader< NoResourcesAvailable, ::Ice::InputStream>::read(istr, *this);
+    ::Ice::StreamReader< RoomDoesntExist, ::Ice::InputStream>::read(istr, *this);
     istr->endSlice();
 }
 /// \endcond
@@ -1508,11 +1444,7 @@ IceProxy::Chat::Server::end_CreateRoom(const ::Ice::AsyncResultPtr& result)
         {
             result->_throwUserException();
         }
-        catch(const ::Chat::NoResourcesAvailable&)
-        {
-            throw;
-        }
-        catch(const ::Chat::RoomAlreadyExist&)
+        catch(const ::Chat::RoomAlreadyExists&)
         {
             throw;
         }
@@ -1598,7 +1530,7 @@ IceProxy::Chat::Server::end_FindRoom(const ::Ice::AsyncResultPtr& result)
         {
             result->_throwUserException();
         }
-        catch(const ::Chat::NoSuchRoomExist&)
+        catch(const ::Chat::RoomDoesntExist&)
         {
             throw;
         }

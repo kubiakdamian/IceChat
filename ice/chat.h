@@ -102,15 +102,15 @@ public:
 static UserAlreadyExists _iceS_UserAlreadyExists_init;
 /// \endcond
 
-class NoSuchUserExist : public ::Ice::UserExceptionHelper<NoSuchUserExist, ::Ice::UserException>
+class UserDoesntExist : public ::Ice::UserExceptionHelper<UserDoesntExist, ::Ice::UserException>
 {
 public:
 
-    virtual ~NoSuchUserExist();
+    virtual ~UserDoesntExist();
 
-    NoSuchUserExist(const NoSuchUserExist&) = default;
+    UserDoesntExist(const UserDoesntExist&) = default;
 
-    NoSuchUserExist() = default;
+    UserDoesntExist() = default;
 
     /**
      * Obtains a tuple containing all of the exception's data members.
@@ -129,15 +129,15 @@ public:
     static const ::std::string& ice_staticId();
 };
 
-class NoSuchRoomExist : public ::Ice::UserExceptionHelper<NoSuchRoomExist, ::Ice::UserException>
+class RoomAlreadyExists : public ::Ice::UserExceptionHelper<RoomAlreadyExists, ::Ice::UserException>
 {
 public:
 
-    virtual ~NoSuchRoomExist();
+    virtual ~RoomAlreadyExists();
 
-    NoSuchRoomExist(const NoSuchRoomExist&) = default;
+    RoomAlreadyExists(const RoomAlreadyExists&) = default;
 
-    NoSuchRoomExist() = default;
+    RoomAlreadyExists() = default;
 
     /**
      * Obtains a tuple containing all of the exception's data members.
@@ -156,42 +156,15 @@ public:
     static const ::std::string& ice_staticId();
 };
 
-class RoomAlreadyExist : public ::Ice::UserExceptionHelper<RoomAlreadyExist, ::Ice::UserException>
+class RoomDoesntExist : public ::Ice::UserExceptionHelper<RoomDoesntExist, ::Ice::UserException>
 {
 public:
 
-    virtual ~RoomAlreadyExist();
+    virtual ~RoomDoesntExist();
 
-    RoomAlreadyExist(const RoomAlreadyExist&) = default;
+    RoomDoesntExist(const RoomDoesntExist&) = default;
 
-    RoomAlreadyExist() = default;
-
-    /**
-     * Obtains a tuple containing all of the exception's data members.
-     * @return The data members in a tuple.
-     */
-
-    std::tuple<> ice_tuple() const
-    {
-        return std::tie();
-    }
-
-    /**
-     * Obtains the Slice type ID of this exception.
-     * @return The fully-scoped type ID.
-     */
-    static const ::std::string& ice_staticId();
-};
-
-class NoResourcesAvailable : public ::Ice::UserExceptionHelper<NoResourcesAvailable, ::Ice::UserException>
-{
-public:
-
-    virtual ~NoResourcesAvailable();
-
-    NoResourcesAvailable(const NoResourcesAvailable&) = default;
-
-    NoResourcesAvailable() = default;
+    RoomDoesntExist() = default;
 
     /**
      * Obtains a tuple containing all of the exception's data members.
@@ -1102,12 +1075,12 @@ protected:
 static UserAlreadyExists _iceS_UserAlreadyExists_init;
 /// \endcond
 
-class NoSuchUserExist : public ::Ice::UserException
+class UserDoesntExist : public ::Ice::UserException
 {
 public:
 
-    NoSuchUserExist() {}
-    virtual ~NoSuchUserExist() throw();
+    UserDoesntExist() {}
+    virtual ~UserDoesntExist() throw();
 
     /**
      * Obtains the Slice type ID of this exception.
@@ -1118,7 +1091,7 @@ public:
      * Polymporphically clones this exception.
      * @return A shallow copy of this exception.
      */
-    virtual NoSuchUserExist* ice_clone() const;
+    virtual UserDoesntExist* ice_clone() const;
     /**
      * Throws this exception.
      */
@@ -1132,12 +1105,12 @@ protected:
     /// \endcond
 };
 
-class NoSuchRoomExist : public ::Ice::UserException
+class RoomAlreadyExists : public ::Ice::UserException
 {
 public:
 
-    NoSuchRoomExist() {}
-    virtual ~NoSuchRoomExist() throw();
+    RoomAlreadyExists() {}
+    virtual ~RoomAlreadyExists() throw();
 
     /**
      * Obtains the Slice type ID of this exception.
@@ -1148,7 +1121,7 @@ public:
      * Polymporphically clones this exception.
      * @return A shallow copy of this exception.
      */
-    virtual NoSuchRoomExist* ice_clone() const;
+    virtual RoomAlreadyExists* ice_clone() const;
     /**
      * Throws this exception.
      */
@@ -1162,12 +1135,12 @@ protected:
     /// \endcond
 };
 
-class RoomAlreadyExist : public ::Ice::UserException
+class RoomDoesntExist : public ::Ice::UserException
 {
 public:
 
-    RoomAlreadyExist() {}
-    virtual ~RoomAlreadyExist() throw();
+    RoomDoesntExist() {}
+    virtual ~RoomDoesntExist() throw();
 
     /**
      * Obtains the Slice type ID of this exception.
@@ -1178,37 +1151,7 @@ public:
      * Polymporphically clones this exception.
      * @return A shallow copy of this exception.
      */
-    virtual RoomAlreadyExist* ice_clone() const;
-    /**
-     * Throws this exception.
-     */
-    virtual void ice_throw() const;
-
-protected:
-
-    /// \cond STREAM
-    virtual void _writeImpl(::Ice::OutputStream*) const;
-    virtual void _readImpl(::Ice::InputStream*);
-    /// \endcond
-};
-
-class NoResourcesAvailable : public ::Ice::UserException
-{
-public:
-
-    NoResourcesAvailable() {}
-    virtual ~NoResourcesAvailable() throw();
-
-    /**
-     * Obtains the Slice type ID of this exception.
-     * @return The fully-scoped type ID.
-     */
-    virtual ::std::string ice_id() const;
-    /**
-     * Polymporphically clones this exception.
-     * @return A shallow copy of this exception.
-     */
-    virtual NoResourcesAvailable* ice_clone() const;
+    virtual RoomDoesntExist* ice_clone() const;
     /**
      * Throws this exception.
      */
@@ -2389,25 +2332,19 @@ struct StreamableTraits< ::Chat::UserAlreadyExists>
 };
 
 template<>
-struct StreamableTraits< ::Chat::NoSuchUserExist>
+struct StreamableTraits< ::Chat::UserDoesntExist>
 {
     static const StreamHelperCategory helper = StreamHelperCategoryUserException;
 };
 
 template<>
-struct StreamableTraits< ::Chat::NoSuchRoomExist>
+struct StreamableTraits< ::Chat::RoomAlreadyExists>
 {
     static const StreamHelperCategory helper = StreamHelperCategoryUserException;
 };
 
 template<>
-struct StreamableTraits< ::Chat::RoomAlreadyExist>
-{
-    static const StreamHelperCategory helper = StreamHelperCategoryUserException;
-};
-
-template<>
-struct StreamableTraits< ::Chat::NoResourcesAvailable>
+struct StreamableTraits< ::Chat::RoomDoesntExist>
 {
     static const StreamHelperCategory helper = StreamHelperCategoryUserException;
 };

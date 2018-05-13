@@ -3,7 +3,6 @@
 namespace ClientApp {
     void Menu::printMenu() {
         cout << endl;
-        cout << "---------MENU---------" << endl;
         cout << "1. Create room" << endl;
         cout << "2. Print rooms" << endl;
         cout << "3. Join room" << endl;
@@ -19,7 +18,7 @@ namespace ClientApp {
     void Menu::getInput() {
         cin >> choice; 
         while (choice < 0 || choice > 8) {
-            cout << "Unkown option, please, enter valid number" << endl;
+            cout << "Enter number from 0 to 8." << endl;
             cin >> choice;
         }
     }

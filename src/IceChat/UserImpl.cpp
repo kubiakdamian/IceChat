@@ -1,5 +1,5 @@
 #include "UserImpl.h"
-namespace LibsIce {
+namespace IceChat {
     string UserImpl::getName(const Ice::Current&) { 
         return name;
     }

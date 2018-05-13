@@ -33,10 +33,8 @@ namespace ClientApp {
         cin.ignore(1000, '\n');
         try {
             server->CreateRoom(roomName);
-        } catch (const Chat::RoomAlreadyExist& ex) {
+        } catch (const Chat::RoomAlreadyExists& ex) {
             cerr << "Room already exists." << endl;
-        } catch (const Chat::NoResourcesAvailable& ex) {
-            cerr << "Creation failed, try again." << endl;
         } catch (const Ice::UnknownException& ex) {
             cerr << "Creation failed." << endl;
         }
@@ -59,7 +57,7 @@ namespace ClientApp {
             RoomPrx room = server->FindRoom(name);
             room->AddUser(user);
             userRooms.push_back(room);
-        } catch (const NoSuchRoomExist& ex) {
+        } catch (const RoomDoesntExist& ex) {
             cerr << "Room doesn't exists." << endl;
         } catch (const UserAlreadyExists& ex) {
             cerr << "There is a user with your nickname in room" << endl;
@@ -71,7 +69,7 @@ namespace ClientApp {
 
     void Client::printRoomsMembers(){
         try {
-            auto users = getUsersInRoom();
+            auto users = getRoomsMembers();
             cout << endl;
             cout << "Users in room:" << endl;
             for (auto& user : users) {
@@ -91,13 +89,13 @@ namespace ClientApp {
         registerUser(newUsername);
     }
 
-    UserList Client::getUsersInRoom(){
+    UserList Client::getRoomsMembers(){
         string roomName = getNameOfTheRoom();
         try {
             RoomPrx room = server->FindRoom(roomName);
             UserList users = room->getUsers();
             return users;
-        } catch (const NoSuchRoomExist& ex) {
+        } catch (const RoomDoesntExist& ex) {
             cerr << "Room doesn't exists." << endl;
         } catch (Ice::UnknownException& ex) {
             cerr << "Couldn't get users." << endl;
@@ -124,7 +122,7 @@ namespace ClientApp {
                     userRooms.erase(roomsIterator);
                     cout << "Room left." << roomName << endl;
                     return;
-                } catch (NoSuchUserExist& ex) {
+                } catch (UserDoesntExist& ex) {
                     cerr << "You aren't in this room." << endl;
                 } catch (Ice::UnknownException& ex) {
                     cerr << ex << endl;
@@ -137,8 +135,8 @@ namespace ClientApp {
         string receiver;
         UserList usersAvailable;
         try {
-            usersAvailable = getUsersInRoom();
-        } catch (NoSuchRoomExist& ex) {
+            usersAvailable = getRoomsMembers();
+        } catch (RoomDoesntExist& ex) {
             cerr << ex << endl;
             return;
         }
@@ -168,7 +166,7 @@ namespace ClientApp {
                     getline(cin, content);
                     (*roomsIterator)->SendMessage(user, content);
                     return;
-                } catch (NoSuchUserExist& ex) {
+                } catch (UserDoesntExist& ex) {
                     cerr << "You are not a member of this room." << endl;
                     return;
                 }

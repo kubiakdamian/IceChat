@@ -4,10 +4,9 @@ interface Room;
 interface RoomFactory;
 
 exception UserAlreadyExists {};
-exception NoSuchUserExist {};
-exception NoSuchRoomExist {};
-exception RoomAlreadyExist {};
-exception NoResourcesAvailable {};
+exception UserDoesntExist {};
+exception RoomAlreadyExists {};
+exception RoomDoesntExist {};
 
 interface User {
   void SendMessage(string where, User* who, string message);
@@ -19,9 +18,9 @@ sequence<Room*> RoomList;
 sequence<RoomFactory*> RoomFactoryList;
 
 interface Server {
-  Room* CreateRoom(string name) throws RoomAlreadyExist, NoResourcesAvailable;
+  Room* CreateRoom(string name) throws RoomAlreadyExists;
   RoomList getRooms();
-  Room* FindRoom(string name) throws NoSuchRoomExist;
+  Room* FindRoom(string name) throws RoomDoesntExist;
   void RegisterRoomFactory(RoomFactory* factory);
   void UnregisterRoomFactory(RoomFactory* factory);
 };

@@ -1,6 +1,6 @@
 #include "RoomImpl.h"
 
-namespace LibsIce {
+namespace IceChat {
     string RoomImpl::getName(const ::Ice::Current&) {
         return roomName;
     }
@@ -27,7 +27,7 @@ namespace LibsIce {
                 } 
             }   
         }else{
-            throw NoSuchUserExist();
+            throw UserDoesntExist();
         }        
     }
 
@@ -41,7 +41,7 @@ namespace LibsIce {
                 userInRoom->SendMessage(roomName, user, message);
             }
         }else{
-            throw NoSuchUserExist();
+            throw UserDoesntExist();
         }
     
     }

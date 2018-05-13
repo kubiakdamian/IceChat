@@ -4,7 +4,7 @@
     #include <random>
     using namespace std;
 
-    namespace LibsIce {
+    namespace IceChat {
         class Ports {
             public:
                 int getServerPort() const {

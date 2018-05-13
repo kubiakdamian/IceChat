@@ -9,7 +9,7 @@
     
     using namespace std;
     using namespace Chat;
-    using namespace LibsIce;
+    using namespace IceChat;
 
     namespace ClientApp {
         class Client {
@@ -36,7 +36,7 @@
                 void createUser();
                 string getNameOfTheRoom();
                 void scrollConsole();
-                UserList getUsersInRoom();
+                UserList getRoomsMembers();
                 void registerUser(string);
                 void initializeServer();
         }; 

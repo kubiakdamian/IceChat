@@ -1,6 +1,6 @@
 #include "RoomFactoryImpl.h"
 
-namespace LibsIce {
+namespace IceChat {
     RoomList RoomFactoryImpl::getRooms(const ::Ice::Current&) {
         return roomList;
     }

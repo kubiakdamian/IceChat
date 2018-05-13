@@ -1,16 +1,13 @@
 #include "ServerImpl.h"
 
-namespace LibsIce {
+namespace IceChat {
     RoomPrx ServerImpl::CreateRoom(const string& name, const ::Ice::Current&) {
         for (auto &room : roomList) {
             if (room->getName() == name) {
-                throw RoomAlreadyExist();
+                throw RoomAlreadyExists();
             }
         }
-        //TODO random select room factory
-        if (roomFactoryList.empty()) {
-            throw NoResourcesAvailable();
-        }
+
         RoomFactoryPrx roomFactory = roomFactoryList.back();
         RoomPrx room = roomFactory->createRoom(name);
         cout << "Creating room with name: " << name << endl;
@@ -29,7 +26,7 @@ namespace LibsIce {
                 return room;
             }
         }
-        throw NoSuchRoomExist();   
+        throw RoomDoesntExist();   
     }
 
     void ServerImpl::RegisterRoomFactory(const RoomFactoryPrx& roomFactory, const ::Ice::Current&) {
