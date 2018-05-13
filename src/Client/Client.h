@@ -15,13 +15,13 @@
         class Client {
             public:
                 Client(const string&);
-                void createRoom() const;
-                void printRooms() const;
+                void createRoom();
+                void printRooms();
                 void joinRoom();
-                void printRoomsMembers() const;
+                void printRoomsMembers();
                 void leaveRoom();
-                void sendPrivateMessage() const;
-                void sendMessage() const;
+                void sendPrivateMessage();
+                void sendMessage();
                 void changeNickname();
                 ~Client();
             private:
@@ -34,10 +34,11 @@
                 RoomList userRooms;
 
                 void createUser();
-                string getNameOfTheRoom() const;
-                void scrollConsole() const;
-                UserList getUsersInRoom() const;
+                string getNameOfTheRoom();
+                void scrollConsole();
+                UserList getUsersInRoom();
                 void registerUser(string);
+                void initializeServer();
         }; 
     }
 

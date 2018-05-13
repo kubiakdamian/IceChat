@@ -8,12 +8,7 @@ namespace ClientApp {
 
     Client::Client(const string& name): username(name) {
         try {
-            iceCommunicator = Ice::initialize();
-            int serverPort = ports.getServerPort();
-            Ice::ObjectPrx base = iceCommunicator->stringToProxy("Server:default -p " + to_string(serverPort));
-            server = ServerPrx::checkedCast(base);
-            if (!server)
-                throw "Invalid proxy";
+            initializeServer();
         } catch (const Ice::Exception& ex) {
             cerr << ex << endl;
         } catch (const char* msg) {
@@ -30,8 +25,8 @@ namespace ClientApp {
             iceCommunicator->destroy();
     }
 
-    void Client::createRoom() const {
-        scrollConsole();
+    void Client::createRoom(){
+       cout << endl;
         string roomName;
         cout << "Enter room name " << endl;
         cin >> roomName;
@@ -45,11 +40,11 @@ namespace ClientApp {
         } catch (const Ice::UnknownException& ex) {
             cerr << "Creation failed." << endl;
         }
-        scrollConsole();
+        cout << endl;
     }
 
-    void Client::printRooms() const {
-        scrollConsole();
+    void Client::printRooms(){
+        cout << endl;
         auto rooms = server->getRooms();
         cout << "Rooms: " << endl;
         for (auto room : rooms) {
@@ -71,13 +66,13 @@ namespace ClientApp {
         } catch (const Ice::UnknownException& ex) {
             cerr << "Joining failed." << endl;
         }
-        scrollConsole();
+        cout << endl;
     }
 
-    void Client::printRoomsMembers() const {
+    void Client::printRoomsMembers(){
         try {
             auto users = getUsersInRoom();
-            scrollConsole();
+            cout << endl;
             cout << "Users in room:" << endl;
             for (auto& user : users) {
                 cout << user->getName() << endl;
@@ -88,7 +83,7 @@ namespace ClientApp {
     }
 
     void Client::changeNickname(){
-        scrollConsole();
+        cout << endl;
         string newUsername;
         cout << "Enter new nickname:" << endl;
         cin >> newUsername;
@@ -96,7 +91,7 @@ namespace ClientApp {
         registerUser(newUsername);
     }
 
-    UserList Client::getUsersInRoom() const {
+    UserList Client::getUsersInRoom(){
         string roomName = getNameOfTheRoom();
         try {
             RoomPrx room = server->FindRoom(roomName);
@@ -110,17 +105,17 @@ namespace ClientApp {
         return UserList();
     }
 
-    string Client::getNameOfTheRoom() const {
-        scrollConsole();
-        string roomName;
+    string Client::getNameOfTheRoom(){
+        cout << endl;
+        string name;
         cout << "Enter room's name:" << endl;
-        cin >> roomName;
+        cin >> name;
         cin.ignore(1000, '\n');
-        return roomName;
+        return name;
     }
 
     void Client::leaveRoom() {
-        scrollConsole();
+        cout << endl;
         string roomName = getNameOfTheRoom();
         for (auto roomsIterator =  userRooms.begin(); roomsIterator != userRooms.end(); ++roomsIterator) {
             if ((*roomsIterator)->getName() == roomName) {
@@ -138,13 +133,7 @@ namespace ClientApp {
         }
     }
 
-    void Client::scrollConsole() const {
-        for (unsigned int i = 0; i < 2; ++i) {
-            cout << endl;
-        }
-    }
-
-    void Client::sendPrivateMessage() const {
+    void Client::sendPrivateMessage(){
         string receiver;
         UserList usersAvailable;
         try {
@@ -168,8 +157,8 @@ namespace ClientApp {
         cerr << "Couldn't find a user." << endl;
     }
 
-    void Client::sendMessage() const {
-        scrollConsole();
+    void Client::sendMessage(){
+        cout << endl;
         string targetRoom = getNameOfTheRoom();
         for (auto roomsIterator =  userRooms.begin(); roomsIterator != userRooms.end(); ++roomsIterator) {
             if ((*roomsIterator)->getName() == targetRoom) {
@@ -194,5 +183,15 @@ namespace ClientApp {
         adapter = iceCommunicator->createObjectAdapterWithEndpoints("User" + username, "default -p " + to_string(port));
         user = UserPrx::uncheckedCast(adapter->addWithUUID(object));
         adapter->activate();
+    }
+
+    void Client::initializeServer(){
+        int serverPort = ports.getServerPort();
+        iceCommunicator = Ice::initialize();     
+        Ice::ObjectPrx base = iceCommunicator->stringToProxy("Server:default -p " + to_string(serverPort));
+        server = ServerPrx::checkedCast(base);
+        if (!server){
+            throw "Invalid proxy";
+        }            
     }
 }
