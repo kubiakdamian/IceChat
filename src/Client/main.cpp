@@ -22,22 +22,22 @@ int main(int argc, char* argv[]) {
                 client.createRoom();
                 break;
             case 2:
-                client.printListAllRooms();
+                client.printRooms();
                 break;
             case 3:
-                client.joinToRoom();
+                client.joinRoom();
                 break;
             case 4:
                 client.leaveRoom();
                 break;
             case 5:
-                client.sendMessageToRoom();
+                client.sendMessage();
                 break;
             case 6:
-                client.printUsersInRoom();
+                client.printRoomsMembers();
                 break;
             case 7:
-                client.sendPrivateMessageToUser();
+                client.sendPrivateMessage();
                 break;
             case 8:
                 client.changeNickname();

@@ -3,7 +3,7 @@
 namespace RoomFactory {
     void Factory::registerRoomFactory() {
         RoomFactoryPtr object = new RoomFactoryImpl();
-        int port = portsUtil.getRandomPort();
+        int port = ports.getRandomPort();
         adapter = iceCommunicator->createObjectAdapterWithEndpoints("RoomFactory", "default -p " + to_string(port));
         roomFactory = RoomFactoryPrx::uncheckedCast(adapter->addWithUUID(object));
         adapter->add(object, iceCommunicator->stringToIdentity("RoomFactory"));
@@ -15,7 +15,7 @@ namespace RoomFactory {
     Factory::Factory() {
         try {
             iceCommunicator = Ice::initialize();
-            int serverPort = portsUtil.getServerPort();
+            int serverPort = ports.getServerPort();
             Ice::ObjectPrx base = iceCommunicator->stringToProxy("Server:default -p " + to_string(serverPort));
             server = ServerPrx::checkedCast(base);
             if (!server) {
@@ -26,7 +26,7 @@ namespace RoomFactory {
         } catch (const NoSuchRoomExist& ex) {
             cerr << ex << endl;
         } catch (const UserAlreadyExists& ex) {
-            cerr << "Such userr already exist" << endl;
+            cerr << "User already exists" << endl;
         } catch (const Ice::Exception& ex) {
             cerr << ex << endl;
         } catch (const char* msg) {

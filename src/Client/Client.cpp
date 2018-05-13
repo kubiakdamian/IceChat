@@ -9,7 +9,7 @@ namespace ClientApp {
     Client::Client(const string& name): username(name) {
         try {
             iceCommunicator = Ice::initialize();
-            int serverPort = portsUtil.getServerPort();
+            int serverPort = ports.getServerPort();
             Ice::ObjectPrx base = iceCommunicator->stringToProxy("Server:default -p " + to_string(serverPort));
             server = ServerPrx::checkedCast(base);
             if (!server)
@@ -48,7 +48,7 @@ namespace ClientApp {
         scrollConsole();
     }
 
-    void Client::printListAllRooms() const {
+    void Client::printRooms() const {
         scrollConsole();
         auto rooms = server->getRooms();
         cout << "Rooms: " << endl;
@@ -58,7 +58,7 @@ namespace ClientApp {
         cout << endl;
     }
 
-    void Client::joinToRoom() {
+    void Client::joinRoom() {
         string name = getNameOfTheRoom();
         try {
             RoomPrx room = server->FindRoom(name);
@@ -74,7 +74,7 @@ namespace ClientApp {
         scrollConsole();
     }
 
-    void Client::printUsersInRoom() const {
+    void Client::printRoomsMembers() const {
         try {
             auto users = getUsersInRoom();
             scrollConsole();
@@ -144,7 +144,7 @@ namespace ClientApp {
         }
     }
 
-    void Client::sendPrivateMessageToUser() const {
+    void Client::sendPrivateMessage() const {
         string receiver;
         UserList usersAvailable;
         try {
@@ -168,7 +168,7 @@ namespace ClientApp {
         cerr << "Couldn't find a user." << endl;
     }
 
-    void Client::sendMessageToRoom() const {
+    void Client::sendMessage() const {
         scrollConsole();
         string targetRoom = getNameOfTheRoom();
         for (auto roomsIterator =  userRooms.begin(); roomsIterator != userRooms.end(); ++roomsIterator) {
@@ -190,7 +190,7 @@ namespace ClientApp {
 
     void Client::registerUser(string username){
         UserPtr object = new UserImpl(username);
-        int port = portsUtil.getRandomPort();
+        int port = ports.getRandomPort();
         adapter = iceCommunicator->createObjectAdapterWithEndpoints("User" + username, "default -p " + to_string(port));
         user = UserPrx::uncheckedCast(adapter->addWithUUID(object));
         adapter->activate();

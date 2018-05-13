@@ -5,7 +5,7 @@
     #include <Ice/Ice.h>
     #include "chat.h"
     #include "UserImpl.h"
-    #include "PortsUtil.h"
+    #include "Ports.h"
     
     using namespace std;
     using namespace Chat;
@@ -16,12 +16,12 @@
             public:
                 Client(const string&);
                 void createRoom() const;
-                void printListAllRooms() const;
-                void joinToRoom();
-                void printUsersInRoom() const;
+                void printRooms() const;
+                void joinRoom();
+                void printRoomsMembers() const;
                 void leaveRoom();
-                void sendPrivateMessageToUser() const;
-                void sendMessageToRoom() const;
+                void sendPrivateMessage() const;
+                void sendMessage() const;
                 void changeNickname();
                 ~Client();
             private:
@@ -30,7 +30,7 @@
                 ServerPrx server;
                 Ice::CommunicatorPtr iceCommunicator;
                 Ice::ObjectAdapterPtr adapter;
-                PortsUtil portsUtil;
+                Ports ports;
                 RoomList userRooms;
 
                 void createUser();

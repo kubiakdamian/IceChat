@@ -13,7 +13,6 @@
                 int getChoice();
             private:
                 int choice;
-
                 void getInput();
         };
     }

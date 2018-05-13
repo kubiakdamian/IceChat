@@ -4,7 +4,7 @@
     #include <Ice/Ice.h>
     #include "chat.h"
     #include "RoomFactoryImpl.h"
-    #include "PortsUtil.h"
+    #include "Ports.h"
 
     using namespace std;
     using namespace Chat;
@@ -21,7 +21,7 @@
                 Ice::CommunicatorPtr iceCommunicator;
                 Ice::ObjectAdapterPtr adapter;
                 RoomFactoryPrx roomFactory;
-                PortsUtil portsUtil;
+                Ports ports;
         };
     }
 
