@@ -14,15 +14,11 @@
             public:
                 UserImpl(const string& n) : name(n){};
                 virtual string getName(const Ice::Current&) override;
-                virtual void SendMessage(const string&, 
-                                         const UserPrx&, 
-                                         const string&, 
-                                         const ::Ice::Current& = ::Ice::Current()) override;
-                virtual void SendPrivateMessage(const UserPrx&, 
-                                                const string&, 
-                                                const ::Ice::Current& = ::Ice::Current()) override;
-            private:
+                virtual void SendMessage(const string&,const UserPrx&, const string&, const ::Ice::Current& = ::Ice::Current()) override;
+                virtual void SendPrivateMessage(const UserPrx&, const string&, const ::Ice::Current& = ::Ice::Current()) override;
                 string name;
+            private:
+                
         };
     }
     

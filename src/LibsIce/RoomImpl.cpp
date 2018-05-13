@@ -23,7 +23,6 @@ namespace LibsIce {
             for (auto usersIterator = users.begin(); usersIterator != users.end(); ++usersIterator) {
                 if ((*usersIterator) == user) {
                     usersIterator = users.erase(usersIterator);
-                    cout << "Removed user " << user->getName() << " from room" << endl;
                     break;
                 } 
             }   

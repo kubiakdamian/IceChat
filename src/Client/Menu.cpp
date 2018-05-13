@@ -11,6 +11,7 @@ namespace ClientApp {
         cout << "5. Send message to room" << endl;
         cout << "6. Get list of users in room" << endl;
         cout << "7. Send private message to other user" << endl;
+        cout << "8. Change username" << endl;
         cout << "0. Exit" << endl;
         cout << endl;
     }

@@ -6,7 +6,6 @@ using namespace std;
 using namespace ClientApp;
 
 int main(int argc, char* argv[]) {
-    int status = 0;
     Menu menu;
     string username;
     
@@ -40,10 +39,13 @@ int main(int argc, char* argv[]) {
             case 7:
                 client.sendPrivateMessageToUser();
                 break;
+            case 8:
+                client.changeNickname();
+                break;
             case 0:
-                return status;
+                return 0;
         }
     }
 
-    return status;
+    return 0;
 }

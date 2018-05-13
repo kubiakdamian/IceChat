@@ -3,11 +3,7 @@
 namespace ClientApp {
 
     void Client::createUser() {
-        UserPtr object = new UserImpl(username);
-        int port = portsUtil.getRandomPort();
-        adapter = iceCommunicator->createObjectAdapterWithEndpoints("User" + username, "default -p " + to_string(port));
-        user = UserPrx::uncheckedCast(adapter->addWithUUID(object));
-        adapter->activate();
+        registerUser(username);
     }
 
     Client::Client(const string& name): username(name) {
@@ -37,17 +33,17 @@ namespace ClientApp {
     void Client::createRoom() const {
         scrollConsole();
         string roomName;
-        cout << "Enter name for new room " << endl;
+        cout << "Enter room name " << endl;
         cin >> roomName;
         cin.ignore(1000, '\n');
         try {
             server->CreateRoom(roomName);
         } catch (const Chat::RoomAlreadyExist& ex) {
-            cerr << "Cannot create. There is a room with that name already." << endl;
+            cerr << "Room already exists." << endl;
         } catch (const Chat::NoResourcesAvailable& ex) {
-            cerr << "Cannot create. There is no resources available. Try again later." << endl;
+            cerr << "Creation failed, try again." << endl;
         } catch (const Ice::UnknownException& ex) {
-            cerr << "Cannot create" << endl;
+            cerr << "Creation failed." << endl;
         }
         scrollConsole();
     }
@@ -55,7 +51,7 @@ namespace ClientApp {
     void Client::printListAllRooms() const {
         scrollConsole();
         auto rooms = server->getRooms();
-        cout << "Available rooms are: " << endl;
+        cout << "Rooms: " << endl;
         for (auto room : rooms) {
             cout << room->getName() << endl;
         }
@@ -69,11 +65,11 @@ namespace ClientApp {
             room->AddUser(user);
             userRooms.push_back(room);
         } catch (const NoSuchRoomExist& ex) {
-            cerr << "There is no such room" << endl;
+            cerr << "Room doesn't exists." << endl;
         } catch (const UserAlreadyExists& ex) {
-            cerr << "Such userr already exist" << endl;
+            cerr << "There is a user with your nickname in room" << endl;
         } catch (const Ice::UnknownException& ex) {
-            cerr << "Operation couldn't be realized." << endl;
+            cerr << "Joining failed." << endl;
         }
         scrollConsole();
     }
@@ -82,13 +78,22 @@ namespace ClientApp {
         try {
             auto users = getUsersInRoom();
             scrollConsole();
-            cout << "Users available in room " << endl;
+            cout << "Users in room:" << endl;
             for (auto& user : users) {
                 cout << user->getName() << endl;
             }
         } catch (const Ice::UnknownException& ex) {
-            cerr << "Operation couldn't be realized." << endl;
+            cerr << "Printing failed." << endl;
         }
+    }
+
+    void Client::changeNickname(){
+        scrollConsole();
+        string newUsername;
+        cout << "Enter new nickname:" << endl;
+        cin >> newUsername;
+
+        registerUser(newUsername);
     }
 
     UserList Client::getUsersInRoom() const {
@@ -98,9 +103,9 @@ namespace ClientApp {
             UserList users = room->getUsers();
             return users;
         } catch (const NoSuchRoomExist& ex) {
-            cerr << "There is no such room" << endl;
+            cerr << "Room doesn't exists." << endl;
         } catch (Ice::UnknownException& ex) {
-            cerr << ex << endl;
+            cerr << "Couldn't get users." << endl;
         }
         return UserList();
     }
@@ -108,7 +113,7 @@ namespace ClientApp {
     string Client::getNameOfTheRoom() const {
         scrollConsole();
         string roomName;
-        cout << "Enter the name of the room:" << endl;
+        cout << "Enter room's name:" << endl;
         cin >> roomName;
         cin.ignore(1000, '\n');
         return roomName;
@@ -120,18 +125,17 @@ namespace ClientApp {
         for (auto roomsIterator =  userRooms.begin(); roomsIterator != userRooms.end(); ++roomsIterator) {
             if ((*roomsIterator)->getName() == roomName) {
                 try {
-                    (*roomsIterator)->LeaveRoom(user);
-                    cout << "Leaving room " << roomName << endl;
+                    (*roomsIterator)->LeaveRoom(user); 
                     userRooms.erase(roomsIterator);
+                    cout << "Room left." << roomName << endl;
                     return;
                 } catch (NoSuchUserExist& ex) {
-                    cerr << "Ooopss.. something is wrong. You couldn't be found on user list for that room. Sorry!" << endl;
+                    cerr << "You aren't in this room." << endl;
                 } catch (Ice::UnknownException& ex) {
                     cerr << ex << endl;
                 }
             }
         }
-        cerr << "You were not joined to room " << roomName << endl;
     }
 
     void Client::scrollConsole() const {
@@ -141,7 +145,7 @@ namespace ClientApp {
     }
 
     void Client::sendPrivateMessageToUser() const {
-        string targetUsername;
+        string receiver;
         UserList usersAvailable;
         try {
             usersAvailable = getUsersInRoom();
@@ -149,19 +153,19 @@ namespace ClientApp {
             cerr << ex << endl;
             return;
         }
-        cout << "Enter the name of the user you want to write to" << endl;
-        cin >> targetUsername;
+        cout << "Enter receiver's name" << endl;
+        cin >> receiver;
         cin.ignore(1000, '\n');
         for(auto& targetUser : usersAvailable) {
-            if (targetUser->getName() == targetUsername) {
+            if (targetUser->getName() == receiver) {
                 string message;
-                cout << "Enter the content of message you want to send to" << endl;
+                cout << "Enter message" << endl;
                 getline(cin, message);
                 targetUser->SendPrivateMessage(user, message);
                 return;
             }
         }
-        cerr << "No such user found. Sorry." << endl;
+        cerr << "Couldn't find a user." << endl;
     }
 
     void Client::sendMessageToRoom() const {
@@ -171,16 +175,24 @@ namespace ClientApp {
             if ((*roomsIterator)->getName() == targetRoom) {
                 try {
                     string content;
-                    cout << "Please, enter content of message you want to send to" << endl;
+                    cout << "Enter message" << endl;
                     getline(cin, content);
                     (*roomsIterator)->SendMessage(user, content);
                     return;
                 } catch (NoSuchUserExist& ex) {
-                    cerr << "Ooopss.. something is wrong. You couldn't be found on user list for that room. Sorry!" << endl;
+                    cerr << "You are not a member of this room." << endl;
                     return;
                 }
             }
         }
-        cerr << "You are not joined to room " << targetRoom << endl;
+        cerr << "You are not a member of this room " << targetRoom << endl;
+    }
+
+    void Client::registerUser(string username){
+        UserPtr object = new UserImpl(username);
+        int port = portsUtil.getRandomPort();
+        adapter = iceCommunicator->createObjectAdapterWithEndpoints("User" + username, "default -p " + to_string(port));
+        user = UserPrx::uncheckedCast(adapter->addWithUUID(object));
+        adapter->activate();
     }
 }
