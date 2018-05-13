@@ -1,16 +1,16 @@
-#include "RoomImpl.h"
+#include "RoomI.h"
 
 namespace IceChat {
-    string RoomImpl::getName(const ::Ice::Current&) {
+    string RoomI::getName(const ::Ice::Current&) {
         return roomName;
     }
 
-    UserList RoomImpl::getUsers(const ::Ice::Current&) {
+    UserList RoomI::getUsers(const ::Ice::Current&) {
         return users;
     }
 
-    void RoomImpl::AddUser(const UserPrx& user, const ::Ice::Current&) {
-        if(!RoomImpl::checkIfUserExists(user)){
+    void RoomI::AddUser(const UserPrx& user, const ::Ice::Current&) {
+        if(!RoomI::checkIfUserExists(user)){
             users.push_back(user);
         }else{
             throw UserAlreadyExists();
@@ -18,8 +18,8 @@ namespace IceChat {
         
     }
 
-    void RoomImpl::LeaveRoom(const UserPrx& user, const ::Ice::Current&) {
-        if(RoomImpl::checkIfUserExists(user)){
+    void RoomI::LeaveRoom(const UserPrx& user, const ::Ice::Current&) {
+        if(RoomI::checkIfUserExists(user)){
             for (auto usersIterator = users.begin(); usersIterator != users.end(); ++usersIterator) {
                 if ((*usersIterator) == user) {
                     usersIterator = users.erase(usersIterator);
@@ -31,12 +31,12 @@ namespace IceChat {
         }        
     }
 
-    void RoomImpl::Destroy(const ::Ice::Current&) {
+    void RoomI::Destroy(const ::Ice::Current&) {
         users.clear();
     }
 
-    void RoomImpl::SendMessage(const UserPrx& user, const string& message, const ::Ice::Current&) {
-        if(RoomImpl::checkIfUserExists(user)){
+    void RoomI::SendMessage(const UserPrx& user, const string& message, const ::Ice::Current&) {
+        if(RoomI::checkIfUserExists(user)){
             for (auto& userInRoom : users) {
                 userInRoom->SendMessage(roomName, user, message);
             }
@@ -46,7 +46,7 @@ namespace IceChat {
     
     }
 
-    bool RoomImpl::checkIfUserExists(const UserPrx& user){
+    bool RoomI::checkIfUserExists(const UserPrx& user){
         int userExist = 0;
         for(auto usersIterator = users.begin(); usersIterator != users.end(); ++usersIterator){
             if((*usersIterator)->getName() == user->getName()){

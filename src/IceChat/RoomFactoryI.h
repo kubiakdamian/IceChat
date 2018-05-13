@@ -1,21 +1,21 @@
-#ifndef ROOM_FACTORY_IMPL_H
-    #define ROOM_FACTORY_IMPL_H
+#ifndef ROOM_FACTORY_I_H
+    #define ROOM_FACTORY_I_H
 
     #include <Ice/Ice.h>
     #include "chat.h"
-    #include "RoomImpl.h"
+    #include "RoomI.h"
     #include "Ports.h"
 
     using namespace std;
     using namespace Chat;
 
     namespace IceChat {
-        class RoomFactoryImpl : public virtual RoomFactory {
+        class RoomFactoryI : public virtual RoomFactory {
             public:
-                RoomFactoryImpl();
+                RoomFactoryI();
                 virtual RoomPrx createRoom(const string&, const ::Ice::Current& = ::Ice::Current()) override;
                 virtual RoomList getRooms(const ::Ice::Current& = ::Ice::Current()) override;
-                ~RoomFactoryImpl();
+                ~RoomFactoryI();
             private:
                 RoomList roomList;
                 Ice::CommunicatorPtr ic;

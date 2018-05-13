@@ -4,7 +4,7 @@
     #include <thread>
     #include <Ice/Ice.h>
     #include "chat.h"
-    #include "UserImpl.h"
+    #include "UserI.h"
     #include "Ports.h"
     
     using namespace std;

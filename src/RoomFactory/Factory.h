@@ -3,7 +3,7 @@
 
     #include <Ice/Ice.h>
     #include "chat.h"
-    #include "RoomFactoryImpl.h"
+    #include "RoomFactoryI.h"
     #include "Ports.h"
 
     using namespace std;
@@ -22,6 +22,7 @@
                 RoomFactoryPrx roomFactory;
                 Ports ports;
                 void registerRoomFactory();
+                void serverImplementation();
         };
     }
 

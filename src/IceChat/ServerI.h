@@ -1,17 +1,17 @@
-#ifndef SERVER_IMPL_H
-    #define SERVER_IMPL_H
+#ifndef SERVER_I_H
+    #define SERVER_I_H
 
     #include <random>
     #include <iterator>
     #include <Ice/Ice.h>
     #include "chat.h"
-    #include "UserImpl.h"
+    #include "UserI.h"
 
     using namespace Chat;
     using namespace std;
 
     namespace IceChat {
-        class ServerImpl : public virtual Server {
+        class ServerI : public virtual Server {
             public:
                 virtual RoomPrx CreateRoom(const string&, const ::Ice::Current& = ::Ice::Current()) override;
                 virtual RoomList getRooms(const ::Ice::Current& = ::Ice::Current()) override;

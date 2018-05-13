@@ -18,8 +18,8 @@
                     return dist(mt);
                 }
             private:
-                static const int serverPort = 2000;
-                static const int min = 2001;
+                static const int serverPort = 10000;
+                static const int min = 10001;
                 static const int max = 49000;
         };
     }

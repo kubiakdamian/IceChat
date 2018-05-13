@@ -1,12 +1,12 @@
-#include "RoomFactoryImpl.h"
+#include "RoomFactoryI.h"
 
 namespace IceChat {
-    RoomList RoomFactoryImpl::getRooms(const ::Ice::Current&) {
+    RoomList RoomFactoryI::getRooms(const ::Ice::Current&) {
         return roomList;
     }
 
-    RoomPrx RoomFactoryImpl::createRoom(const string& name, const ::Ice::Current&) {
-        RoomPtr object = new RoomImpl(name);
+    RoomPrx RoomFactoryI::createRoom(const string& name, const ::Ice::Current&) {
+        RoomPtr object = new RoomI(name);
         cout << "RoomFactory::Creating room " << name << endl;
         int port = ports.getRandomPort();
 
@@ -20,11 +20,11 @@ namespace IceChat {
         return room;
     }
 
-    RoomFactoryImpl::RoomFactoryImpl() {
+    RoomFactoryI::RoomFactoryI() {
         ic = Ice::initialize();
     }
 
-    RoomFactoryImpl::~RoomFactoryImpl() {
+    RoomFactoryI::~RoomFactoryI() {
         if (ic) {
             try {
                 ic->destroy();

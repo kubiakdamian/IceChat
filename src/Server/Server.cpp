@@ -1,6 +1,6 @@
 #include <Ice/Ice.h>
 #include "chat.h"
-#include "ServerImpl.h"
+#include "ServerI.h"
 #include "Ports.h"
 
 using namespace IceChat;
@@ -14,7 +14,8 @@ int main(int argc, char* argv[]) {
         ic = Ice::initialize(argc, argv);
         int serverPort = ports.getServerPort();
         Ice::ObjectAdapterPtr adapter = ic->createObjectAdapterWithEndpoints("ServerAdapter", "default -p " + to_string(serverPort));
-        Ice::ObjectPtr object = new ServerImpl();
+        Ice::ObjectPtr object = new ServerI();
+        //servant
         adapter->add(object, ic->stringToIdentity("Server"));
         adapter->activate();
         ic->waitForShutdown();

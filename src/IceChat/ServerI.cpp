@@ -1,7 +1,7 @@
-#include "ServerImpl.h"
+#include "ServerI.h"
 
 namespace IceChat {
-    RoomPrx ServerImpl::CreateRoom(const string& name, const ::Ice::Current&) {
+    RoomPrx ServerI::CreateRoom(const string& name, const ::Ice::Current&) {
         for (auto &room : roomList) {
             if (room->getName() == name) {
                 throw RoomAlreadyExists();
@@ -10,17 +10,16 @@ namespace IceChat {
 
         RoomFactoryPrx roomFactory = roomFactoryList.back();
         RoomPrx room = roomFactory->createRoom(name);
-        cout << "Creating room with name: " << name << endl;
         roomList.push_back(room);
-        cout << "Room " << name << " created." << endl;
+        cout << "Added room: " << name << endl;
         return room;
     }
 
-    RoomList ServerImpl::getRooms(const ::Ice::Current&) {
+    RoomList ServerI::getRooms(const ::Ice::Current&) {
         return roomList;
     }
 
-    RoomPrx ServerImpl::FindRoom(const string& name, const ::Ice::Current& ) {
+    RoomPrx ServerI::FindRoom(const string& name, const ::Ice::Current& ) {
         for (auto &room : roomList) {
             if (room->getName() == name) {
                 return room;
@@ -29,12 +28,12 @@ namespace IceChat {
         throw RoomDoesntExist();   
     }
 
-    void ServerImpl::RegisterRoomFactory(const RoomFactoryPrx& roomFactory, const ::Ice::Current&) {
+    void ServerI::RegisterRoomFactory(const RoomFactoryPrx& roomFactory, const ::Ice::Current&) {
         roomFactoryList.push_back(roomFactory);
         cout << "Room factory registred " << endl;
     }
 
-    void ServerImpl::UnregisterRoomFactory(const RoomFactoryPrx& roomFactory, const ::Ice::Current&) {
+    void ServerI::UnregisterRoomFactory(const RoomFactoryPrx& roomFactory, const ::Ice::Current&) {
         for (auto registredFactoryIt = roomFactoryList.begin(); registredFactoryIt != roomFactoryList.end(); ) {
             if (*registredFactoryIt == roomFactory) {
                 registredFactoryIt = roomFactoryList.erase(registredFactoryIt);

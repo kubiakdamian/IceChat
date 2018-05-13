@@ -1,5 +1,5 @@
-#ifndef USER_IMPL_H
-    #define USER_IMPL_H
+#ifndef USER_I_H
+    #define USER_I_H
 
     #include <Ice/Ice.h>
     #include "chat.h"
@@ -10,15 +10,14 @@
     using namespace std;
 
     namespace IceChat {
-        class UserImpl : public virtual User {
+        class UserI : public virtual User {
             public:
-                UserImpl(const string& n) : name(n){};
+                UserI(const string& n) : name(n){};
                 virtual string getName(const Ice::Current&) override;
                 virtual void SendMessage(const string&,const UserPrx&, const string&, const ::Ice::Current& = ::Ice::Current()) override;
                 virtual void SendPrivateMessage(const UserPrx&, const string&, const ::Ice::Current& = ::Ice::Current()) override;
                 string name;
             private:
-                
         };
     }
     

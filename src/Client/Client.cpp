@@ -60,7 +60,7 @@ namespace ClientApp {
         } catch (const RoomDoesntExist& ex) {
             cerr << "Room doesn't exists." << endl;
         } catch (const UserAlreadyExists& ex) {
-            cerr << "There is a user with your nickname in room" << endl;
+            cerr << "There is a user with your nickname in room. You have to change your username to join this room." << endl;
         } catch (const Ice::UnknownException& ex) {
             cerr << "Joining failed." << endl;
         }
@@ -176,7 +176,7 @@ namespace ClientApp {
     }
 
     void Client::registerUser(string username){
-        UserPtr object = new UserImpl(username);
+        UserPtr object = new UserI(username);
         int port = ports.getRandomPort();
         adapter = iceCommunicator->createObjectAdapterWithEndpoints("User" + username, "default -p " + to_string(port));
         user = UserPrx::uncheckedCast(adapter->addWithUUID(object));
@@ -187,6 +187,7 @@ namespace ClientApp {
         int serverPort = ports.getServerPort();
         iceCommunicator = Ice::initialize();     
         Ice::ObjectPrx base = iceCommunicator->stringToProxy("Server:default -p " + to_string(serverPort));
+        //We need checkCast to down-cast ObjectPrx to ServerPrx
         server = ServerPrx::checkedCast(base);
         if (!server){
             throw "Invalid proxy";

@@ -2,7 +2,7 @@
 
 namespace RoomFactory {
     void Factory::registerRoomFactory() {
-        RoomFactoryPtr object = new RoomFactoryImpl();
+        RoomFactoryPtr object = new RoomFactoryI();
         int port = ports.getRandomPort();
         adapter = ic->createObjectAdapterWithEndpoints("RoomFactory", "default -p " + to_string(port));
         roomFactory = RoomFactoryPrx::uncheckedCast(adapter->addWithUUID(object));
@@ -14,13 +14,7 @@ namespace RoomFactory {
 
     Factory::Factory() {
         try {
-            ic = Ice::initialize();
-            int serverPort = ports.getServerPort();
-            Ice::ObjectPrx base = ic->stringToProxy("Server:default -p " + to_string(serverPort));
-            server = ServerPrx::checkedCast(base);
-            if (!server) {
-                throw "Invalid proxy";
-            }
+            serverImplementation();
             registerRoomFactory();
         } catch (const RoomAlreadyExists &ex) {
             cerr << ex << endl;
@@ -37,5 +31,15 @@ namespace RoomFactory {
 
     Factory::~Factory() {
         server->UnregisterRoomFactory(roomFactory);
+    }
+
+    void Factory::serverImplementation(){
+        ic = Ice::initialize();
+        int serverPort = ports.getServerPort();
+        Ice::ObjectPrx base = ic->stringToProxy("Server:default -p " + to_string(serverPort));
+        server = ServerPrx::checkedCast(base);
+        if (!server) {
+            throw "Invalid proxy";
+        }
     }
 }
